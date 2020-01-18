@@ -219,6 +219,7 @@
             "sources" : [
                 {
                     "type" : "git",
+                    "branch" : "retro-gtk-0-18",
                     "url" : "https://gitlab.gnome.org/GNOME/retro-gtk.git"
                 }
             ]
