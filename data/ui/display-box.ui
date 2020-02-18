@@ -4,15 +4,16 @@
   <template class="GamesDisplayBox" parent="GtkBin">
     <property name="visible">True</property>
     <child>
-      <object class="GamesFullscreenBox">
+      <object class="GamesFullscreenBox" id="fullscreen_box">
         <property name="visible">True</property>
-        <property name="autohide" bind-source="GamesDisplayBox" bind-property="is-showing-snapshots" bind-flags="bidirectional|sync-create|invert-boolean"/>
         <property name="is-fullscreen" bind-source="GamesDisplayBox" bind-property="is-fullscreen" bind-flags="bidirectional"/>
         <child type="titlebar">
           <object class="GamesDisplayHeaderBar" id="fullscreen_header_bar">
             <property name="visible">True</property>
             <property name="show-title-buttons">False</property>
             <property name="is-showing-snapshots" bind-source="GamesDisplayBox" bind-property="is-showing-snapshots" bind-flags="bidirectional"/>
+            <signal name="notify::is_showing_snapshots" handler="block_autohide_changed"/>
+            <signal name="notify::is-menu-open" handler="block_autohide_changed"/>
             <signal name="back" handler="on_fullscreen_header_bar_back"/>
             <signal name="size-allocate" handler="on_fullscreen_header_bar_size_allocated"/>
           </object>

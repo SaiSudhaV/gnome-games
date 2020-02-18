@@ -61,6 +61,8 @@ private class Games.DisplayBox : Gtk.Bin {
 	[GtkChild]
 	private DisplayBin display_bin;
 	[GtkChild]
+	private FullscreenBox fullscreen_box;
+	[GtkChild]
 	private DisplayHeaderBar fullscreen_header_bar;
 	[GtkChild]
 	private FlashBox flash_box;
@@ -83,6 +85,11 @@ private class Games.DisplayBox : Gtk.Bin {
 		stack.visible_child = error_display;
 		is_showing_snapshots = false;
 		error_display.game_crashed (game, error_message);
+	}
+
+	[GtkCallback]
+	public void block_autohide_changed () {
+		fullscreen_box.autohide = !fullscreen_header_bar.is_menu_open && !is_showing_snapshots;
 	}
 
 	[GtkCallback]

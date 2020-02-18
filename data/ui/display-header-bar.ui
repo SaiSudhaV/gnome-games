@@ -71,6 +71,7 @@
                 <property name="valign">center</property>
                 <property name="can-focus">False</property>
                 <property name="menu-model">secondary_menu</property>
+                <signal name="notify::active" handler="on_menu_state_changed"/>
                 <style>
                   <class name="image-button"/>
                 </style>
@@ -113,7 +114,9 @@
               </packing>
             </child>
             <child>
-              <object class="GamesMediaMenuButton" id="media_button"/>
+              <object class="GamesMediaMenuButton" id="media_button">
+                <signal name="notify::active" handler="on_menu_state_changed"/>
+              </object>
               <packing>
                 <property name="pack-type">end</property>
               </packing>

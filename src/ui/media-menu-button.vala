@@ -9,6 +9,8 @@ private class Games.MediaMenuButton : Gtk.Bin {
 	[GtkChild]
 	private Gtk.ListBox list_box;
 
+	public bool active { get; set; }
+
 	private MediaSet _media_set;
 	public MediaSet media_set {
 		get { return _media_set; }

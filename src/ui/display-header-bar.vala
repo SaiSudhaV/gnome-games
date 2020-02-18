@@ -4,6 +4,8 @@
 private class Games.DisplayHeaderBar : Gtk.Bin {
 	public signal void back ();
 
+	private ulong extra_widget_notify_block_autohide_id;
+
 	[GtkChild]
 	private MediaMenuButton media_button;
 
@@ -13,6 +15,7 @@ private class Games.DisplayHeaderBar : Gtk.Bin {
 	public bool can_fullscreen { get; set; }
 	public bool is_fullscreen { get; set; }
 	public bool is_showing_snapshots { get; set; }
+	public bool is_menu_open { get; private set; }
 
 	public MediaSet? media_set {
 		set { media_button.media_set = value; }
@@ -43,13 +46,18 @@ private class Games.DisplayHeaderBar : Gtk.Bin {
 			if (extra_widget == value)
 				return;
 
-			if (extra_widget != null)
+			if (extra_widget != null) {
+				extra_widget.disconnect (extra_widget_notify_block_autohide_id);
 				ingame_header_bar.remove (extra_widget);
+				extra_widget_notify_block_autohide_id = 0;
+			}
 
 			_extra_widget = value;
 
-			if (extra_widget != null)
+			if (extra_widget != null) {
+				extra_widget_notify_block_autohide_id = extra_widget.notify["block-autohide"].connect (on_menu_state_changed);
 				ingame_header_bar.pack_end (extra_widget);
+			}
 		}
 	}
 
@@ -87,6 +95,11 @@ private class Games.DisplayHeaderBar : Gtk.Bin {
 	private void on_fullscreen_clicked () {
 		is_fullscreen = true;
 		settings.set_boolean ("fullscreen", true);
+	}
+
+	[GtkCallback]
+	private void on_menu_state_changed () {
+		is_menu_open = media_button.active || secondary_menu_button.active || extra_widget.block_autohide;
 	}
 
 	[GtkCallback]
